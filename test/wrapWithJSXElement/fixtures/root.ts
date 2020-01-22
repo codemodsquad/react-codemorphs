@@ -1,11 +1,9 @@
 export const input = `
 const Comp = () => (
-  <div>
-    /* selectionStart */
+  <div /* selectionStart *//* selectionEnd */>
     {foo}
     {bar}
     <span />
-    /* selectionEnd */
     {baz}
   </div>
 )
@@ -17,13 +15,13 @@ export const options = {
 
 export const expected = `
 const Comp = () => (
-  <div>
-    <Test>
+  <Test>
+    <div>
       {foo}
       {bar}
       <span />
-    </Test>
-    {baz}
-  </div>
+      {baz}
+    </div>
+  </Test>
 )
 `

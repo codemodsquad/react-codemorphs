@@ -15,7 +15,6 @@ module.exports = function addStyles(
 ): string | null | undefined | void {
   const j = api.jscodeshift
 
-  const { statement } = j.template
   const root = j(fileInfo.source)
 
   const { name } = options

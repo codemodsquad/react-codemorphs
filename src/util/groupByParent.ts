@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Collection } from 'jscodeshift/src/Collection'
 import { ASTPath } from 'jscodeshift'
 
