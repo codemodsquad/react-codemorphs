@@ -3,11 +3,12 @@
 import { describe } from 'mocha'
 import * as path from 'path'
 import testFixtures from '../testFixtures'
-const example = require('../../src/example')
+const wrapWithJSXElement = require('../../src/wrapWithJSXElement')
 
-describe(`example`, function() {
+describe(`wrapWithJSXElement`, function() {
   testFixtures({
     glob: path.join(__dirname, 'fixtures', '*.ts'),
-    transform: example,
+    transform: wrapWithJSXElement,
+    defaultParser: 'tsx',
   })
 })

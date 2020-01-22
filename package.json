@@ -1,7 +1,7 @@
 {
-  "name": "jscodeshift-transforms-skeleton",
+  "name": "react-codemorphs",
   "version": "0.0.0-development",
-  "description": "skeleton for a jscodeshift transforms package",
+  "description": "codemods for everyday work with React",
   "sideEffects": false,
   "scripts": {
     "lint": "eslint $npm_package_config_lint",
@@ -68,18 +68,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jedwards1211/jscodeshift-transforms-skeleton.git"
+    "url": "https://github.com/jedwards1211/react-codemorphs.git"
   },
   "keywords": [
-    "jscodeshift",
-    "codemods"
+    "react",
+    "codemods",
+    "jscodeshift"
   ],
   "author": "Andy Edwards",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jedwards1211/jscodeshift-transforms-skeleton/issues"
+    "url": "https://github.com/jedwards1211/react-codemorphs/issues"
   },
-  "homepage": "https://github.com/jedwards1211/jscodeshift-transforms-skeleton#readme",
+  "homepage": "https://github.com/jedwards1211/react-codemorphs#readme",
   "devDependencies": {
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.6",
