@@ -120,3 +120,45 @@ const Foo = () => (
   </div>
 )
 ```
+
+# `addProp`
+
+A codemod that adds the identifier under the cursor as a prop to the surrounding component.
+Adds a prop type declaration if possible, and binds the identifier via destructuring on `props`
+or replaces it with a reference to `props`/`this.props`.
+
+## Example
+
+### Before
+
+Cursor is positioned in the middle of `text` below:
+
+```tsx
+import * as React from 'react'
+
+interface Props {}
+
+const Foo = (props: Props) => <div>{text}</div>
+```
+
+### Transform
+
+```
+jscodeshift -t path/to/react-codemorphs/wrapWithJSXElement.js \
+  --selectionStart=<in the middle of text> \
+  --selectionEnd=<in the middle of text> \
+  --typeAnnotation=string
+  Foo.ts
+```
+
+### After (with formatting)
+
+```tsx
+import * as React from 'react'
+
+interface Props {
+  text: string
+}
+
+const Foo = (props: Props) => <div>{props.text}</div>
+```
