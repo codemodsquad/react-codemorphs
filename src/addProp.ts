@@ -1,15 +1,9 @@
-import { ASTPath, Node, FileInfo, API, Options } from 'jscodeshift'
-import pathsInRange from 'jscodeshift-paths-in-range'
+import { FileInfo, API, Options } from 'jscodeshift'
 import getReactComponent from './util/getReactComponent'
 import getPropsType from './util/getPropsType'
 import addPropType from './util/addPropType'
 import parseTypeAnnotation from './util/parseTypeAnnotation'
-
-type Filter = (
-  path: ASTPath<Node>,
-  index: number,
-  paths: Array<ASTPath<Node>>
-) => boolean
+import { getFilter } from './util/Filter'
 
 module.exports = function addProp(
   fileInfo: FileInfo,
@@ -21,19 +15,9 @@ module.exports = function addProp(
 
   const root = j(fileInfo.source)
 
-  let filter: Filter
-  if (options.selectionStart) {
-    const selectionStart = parseInt(options.selectionStart)
-    const selectionEnd = options.selectionEnd
-      ? parseInt(options.selectionEnd)
-      : selectionStart
-    filter = pathsInRange(selectionStart, selectionEnd)
-  } else {
-    filter = (): boolean => true
-  }
-
   const typeAnnotation = parseTypeAnnotation(j, options.typeAnnotation || 'any')
 
+  const filter = getFilter(options)
   const identifier = root.find(j.Identifier).filter(filter)
 
   if (!identifier.size()) {

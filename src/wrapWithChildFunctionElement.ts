@@ -1,14 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { ASTPath, Node, FileInfo, API, Options } from 'jscodeshift'
-import pathsInRange from 'jscodeshift-paths-in-range'
+import { ASTPath, FileInfo, API, Options } from 'jscodeshift'
 import hasFlowAnnotation from './util/hasFlowAnnotation'
-
-type Filter = (
-  path: ASTPath<Node>,
-  index: number,
-  paths: Array<ASTPath<Node>>
-) => boolean
+import { getFilter } from './util/Filter'
 
 module.exports = function wrapWithChildFunctionElement(
   fileInfo: FileInfo,
@@ -23,17 +17,7 @@ module.exports = function wrapWithChildFunctionElement(
 
   const root = j(fileInfo.source)
   const { expression } = j.template
-
-  let filter: Filter
-  if (options.selectionStart) {
-    const selectionStart = parseInt(options.selectionStart)
-    const selectionEnd = options.selectionEnd
-      ? parseInt(options.selectionEnd)
-      : selectionStart
-    filter = pathsInRange(selectionStart, selectionEnd)
-  } else {
-    filter = (): boolean => true
-  }
+  const filter = getFilter(options)
 
   const element = root
     .find(j.JSXElement)
