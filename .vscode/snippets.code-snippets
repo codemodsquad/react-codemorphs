@@ -36,5 +36,26 @@
 	    "}",
 	    ""
 	  ]
+	},
+	"fixture": {
+		"prefix": "fixture",
+		"description": "Test fixture",
+	  "body": [
+	    "export const file = '${1:test.js}'",
+	    "export const parser = '${2:babylon}'",
+	    "",
+	    "export const options = {",
+	    "  $3",
+	    "}",
+	    "",
+	    "export const input = `",
+	    "$4",
+	    "`",
+	    "",
+	    "export const expected = `",
+	    "$5",
+	    "`",
+	    ""
+	  ]
 	}
 }

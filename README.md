@@ -6,7 +6,8 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![npm version](https://badge.fury.io/js/react-codemorphs.svg)](https://badge.fury.io/js/react-codemorphs)
 
-codemods for everyday work with React
+Codemods for everyday work with React. All support
+Flow, TypeScript, and plain JS.
 
 These codemods are intended to be called from IDE extensions, calling them
 from the `jscodeshift` CLI wouldn't be worth the effort.
@@ -161,4 +162,115 @@ interface Props {
 }
 
 const Foo = (props: Props) => <div>{props.text}</div>
+```
+
+# `wrapWithJSXElement`
+
+A codemod that wraps selected JSX elements inside a parent JSX element.
+This is intended to be called from IDE extensions, it's too cumbersome to call
+from the JSCodeshift CLI.
+
+## Special Options
+
+### `selectionStart` (`number`, **required**)
+
+The start of the selection in the source code. This is used for determining which JSX elements to wrap.
+
+### `selectionEnd` (`number`, **required**)
+
+The end of the selection in the source code. This is used for determining which JSX elements to wrap.
+
+### `name` (`string`, **required**)
+
+The name of the JSX element to wrap with.
+
+# `renderConditionally`
+
+Wraps the selected JSX in `{true && ...}`. If
+there are multiple siblings selected, wraps in `{true && <React.Fragment>...</React.Fragment>}`.
+
+If you want to wrap in a ternary conditional like Glean's
+"Render Conditionally" refactor, see `wrapWithTernaryConditional`.
+
+## Example
+
+### Before
+
+```tsx
+const Foo = () => (
+  <div>
+    {foo} bar
+    <span />
+    {baz}
+  </div>
+)
+```
+
+### Transform
+
+```
+jscodeshift -t path/to/react-codemorphs/renderConditionally.js \
+  --selectionStart=<before {foo}> \
+  --selectionEnd=<before {baz}> \
+  Foo.ts
+```
+
+### After (with formatting)
+
+```tsx
+const Foo = () => (
+  <div>
+    {true && (
+      <React.Fragment>
+        {foo} bar
+        <span />
+      </React.Fragment>
+    )}
+    {baz}
+  </div>
+)
+```
+
+# `wrapWithTernaryConditional`
+
+Wraps the selected JSX in `{true ? ... : null}`. If
+there are multiple siblings selected, wraps in `{true ? <React.Fragment>...</React.Fragment> : null}`.
+
+## Example
+
+### Before
+
+```tsx
+const Foo = () => (
+  <div>
+    {foo} bar
+    <span />
+    {baz}
+  </div>
+)
+```
+
+### Transform
+
+```
+jscodeshift -t path/to/react-codemorphs/wrapWithTernaryConditional.js \
+  --selectionStart=<before {foo}> \
+  --selectionEnd=<before {baz}> \
+  Foo.ts
+```
+
+### After (with formatting)
+
+```tsx
+const Foo = () => (
+  <div>
+    {true ? (
+      <React.Fragment>
+        {foo} bar
+        <span />
+      </React.Fragment>
+    ) : null}
+    {baz}
+  </div>
+)
 ```
