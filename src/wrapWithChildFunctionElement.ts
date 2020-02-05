@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { ASTPath, FileInfo, API, Options } from 'jscodeshift'
+import { FileInfo, API, Options } from 'jscodeshift'
 import hasFlowAnnotation from './util/hasFlowAnnotation'
-import { getFilter } from './util/Filter'
+import groupSelections from './util/groupSelections'
+import getExpression from './util/getExpression'
 
 module.exports = function wrapWithChildFunctionElement(
   fileInfo: FileInfo,
@@ -17,12 +18,7 @@ module.exports = function wrapWithChildFunctionElement(
 
   const root = j(fileInfo.source)
   const { expression } = j.template
-  const filter = getFilter(options)
 
-  const element = root
-    .find(j.JSXElement)
-    .filter(filter)
-    .at(0)
   const name = j.jsxIdentifier(options.name)
   const open = j.jsxOpeningElement(name)
   const close = j.jsxClosingElement(name)
@@ -30,26 +26,30 @@ module.exports = function wrapWithChildFunctionElement(
   const isTypeScript = /\.tsx?/.test(fileInfo.path)
   const isFlow = hasFlowAnnotation(root)
 
-  if (isFlow) {
-    element.replaceWith((path: ASTPath<any>) =>
-      j.jsxElement(open, close, [
-        j.jsxExpressionContainer(expression`(): React.Node => (${path.node})`),
-      ])
-    )
-  } else if (isTypeScript) {
-    element.replaceWith((path: ASTPath<any>) =>
-      j.jsxElement(open, close, [
-        j.jsxExpressionContainer(
-          expression`(): React.ReactNode => (${path.node})`
-        ),
-      ])
-    )
-  } else {
-    element.replaceWith((path: ASTPath<any>) =>
-      j.jsxElement(open, close, [
-        j.jsxExpressionContainer(expression`() => (${path.node})`),
-      ])
-    )
+  for (const group of groupSelections(root, options)) {
+    const node = getExpression(group.node)
+
+    if (isFlow) {
+      group.replace(
+        j.jsxElement(open, close, [
+          j.jsxExpressionContainer(expression`(): React.Node => (${node})`),
+        ])
+      )
+    } else if (isTypeScript) {
+      group.replace(
+        j.jsxElement(open, close, [
+          j.jsxExpressionContainer(
+            expression`(): React.ReactNode => (${node})`
+          ),
+        ])
+      )
+    } else {
+      group.replace(
+        j.jsxElement(open, close, [
+          j.jsxExpressionContainer(expression`() => (${node})`),
+        ])
+      )
+    }
   }
 
   return root.toSource()

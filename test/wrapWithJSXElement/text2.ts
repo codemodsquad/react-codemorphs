@@ -1,10 +1,11 @@
 export const input = `
 const Comp = () => (
-  <div>
-    This /* selectionStart */is a
+  <div>/* selectionStart */
+    This is a
     <button>
       Test
-    </button>/* selectionEnd */
+    </button>
+    /* selectionEnd */
     <span />
   </div>
 )
@@ -17,9 +18,8 @@ export const options = {
 export const expected = `
 const Comp = () => (
   <div>
-    This{' '}
     <Test>
-      is a
+      This is a
       <button>
         Test
       </button>

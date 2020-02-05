@@ -7,15 +7,20 @@ export type Filter = (
   paths: Array<ASTPath<Node>>
 ) => boolean
 
-export function getFilter(options: Options): Filter {
+export function getSelectionRange(options: Options): [number, number] | null {
   // istanbul ignore else
   if (options.selectionStart) {
     const selectionStart = parseInt(options.selectionStart)
     const selectionEnd = options.selectionEnd
       ? parseInt(options.selectionEnd)
       : selectionStart
-    return pathsInRange(selectionStart, selectionEnd)
+    return [selectionStart, selectionEnd]
   } else {
-    return (): boolean => true
+    return null
   }
+}
+
+export function getFilter(options: Options): Filter {
+  const range = getSelectionRange(options)
+  return range ? pathsInRange(range[0], range[1]) : (): boolean => true
 }

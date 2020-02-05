@@ -128,6 +128,20 @@ A codemod that adds the identifier under the cursor as a prop to the surrounding
 Adds a prop type declaration if possible, and binds the identifier via destructuring on `props`
 or replaces it with a reference to `props`/`this.props`.
 
+## Special Options
+
+### `selectionStart` (`number`, **required**)
+
+The start of the selection in the source code. This is used for determining which property to add.
+
+### `selectionEnd` (`number`, **required**)
+
+The end of the selection in the source code. This is used for determining which property to add.
+
+### `typeAnnotation` (`string`, **optional**)
+
+The Flow or TypeScript type annotation to use for the property type declaration.
+
 ## Example
 
 ### Before
@@ -184,6 +198,44 @@ The end of the selection in the source code. This is used for determining which 
 
 The name of the JSX element to wrap with.
 
+## Example
+
+### Before
+
+```tsx
+const Foo = () => (
+  <div>
+    {foo} bar
+    <span />
+    {baz}
+  </div>
+)
+```
+
+### Transform
+
+```
+jscodeshift -t path/to/react-codemorphs/renderConditionally.js \
+  --selectionStart=<before {foo}> \
+  --selectionEnd=<before {baz}> \
+  --name=Test \
+  Foo.ts
+```
+
+### After (with formatting)
+
+```tsx
+const Foo = () => (
+  <div>
+    <Test>
+      {foo} bar
+      <span />
+    </Test>
+    {baz}
+  </div>
+)
+```
+
 # `renderConditionally`
 
 Wraps the selected JSX in `{true && ...}`. If
@@ -191,6 +243,16 @@ there are multiple siblings selected, wraps in `{true && <React.Fragment>...</Re
 
 If you want to wrap in a ternary conditional like Glean's
 "Render Conditionally" refactor, see `wrapWithTernaryConditional`.
+
+## Special Options
+
+### `selectionStart` (`number`, **required**)
+
+The start of the selection in the source code. This is used for determining which JSX elements to wrap.
+
+### `selectionEnd` (`number`, **required**)
+
+The end of the selection in the source code. This is used for determining which JSX elements to wrap.
 
 ## Example
 
@@ -235,6 +297,16 @@ const Foo = () => (
 
 Wraps the selected JSX in `{true ? ... : null}`. If
 there are multiple siblings selected, wraps in `{true ? <React.Fragment>...</React.Fragment> : null}`.
+
+## Special Options
+
+### `selectionStart` (`number`, **required**)
+
+The start of the selection in the source code. This is used for determining which JSX elements to wrap.
+
+### `selectionEnd` (`number`, **required**)
+
+The end of the selection in the source code. This is used for determining which JSX elements to wrap.
 
 ## Example
 

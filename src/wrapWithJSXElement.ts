@@ -1,6 +1,6 @@
 import { FileInfo, API, Options } from 'jscodeshift'
-import groupByParent from './util/groupByParent'
-import { getFilter } from './util/Filter'
+import groupSelections from './util/groupSelections'
+import isReactFragment from './util/isReactFragment'
 
 module.exports = function addStyles(
   fileInfo: FileInfo,
@@ -16,30 +16,17 @@ module.exports = function addStyles(
     throw new Error('options.name must be a non-empty string')
   }
 
-  const filter = getFilter(options)
-
-  const elements = root
-    .find(j.Node)
-    .filter(
-      path =>
-        path.node.type !== 'JSXOpeningElement' &&
-        path.node.type !== 'JSXClosingElement' &&
-        (path.node.type === 'JSXElement' ||
-          (path.parent && path.parent.node.type === 'JSXElement'))
-    )
-    .filter(filter)
-
-  for (const group of groupByParent(elements)) {
-    j(group[0]).replaceWith(
+  for (const group of groupSelections(root, options)) {
+    const { node } = group
+    group.replace(
       j.jsxElement(
         j.jsxOpeningElement(j.jsxIdentifier(name)),
         j.jsxClosingElement(j.jsxIdentifier(name)),
-        group.map(path => path.node)
+        node.type === 'JSXFragment' || isReactFragment(node)
+          ? node.children
+          : [node]
       )
     )
-    for (let i = 1, end = group.length; i < end; i++) {
-      j(group[i]).remove()
-    }
   }
 
   return root.toSource()

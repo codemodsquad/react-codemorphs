@@ -4874,9 +4874,9 @@ jsbn@~0.1.0:
   integrity sha1-peZUwuWi3rXyAdls77yoDA7y9RM=
 
 jscodeshift-paths-in-range@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/jscodeshift-paths-in-range/-/jscodeshift-paths-in-range-1.0.0.tgz#534f1c95857601f517b144af1d6718a3e2728693"
-  integrity sha512-0PFCzk5FLlcpUAbfTXHtsE+MqiSqcEMHII2chVbhliguOFo5oQCKiYLexqYwHXfROycOQf8ZFW3gWUSTpgwa1g==
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/jscodeshift-paths-in-range/-/jscodeshift-paths-in-range-1.1.0.tgz#accc511afd807094f274a497f136b6d338efda8d"
+  integrity sha512-Hy/wwoLxXxLQXnvo2wBnqMXgvQODaU5EdjJjQp/5sPhbBujSJa+8K+jV75uJC+TnPeOM7ofdvQu72P6l/idn9g==
   dependencies:
     "@babel/runtime" "^7.1.5"
 
