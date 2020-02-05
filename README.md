@@ -105,7 +105,7 @@ const Foo = () => (
 ### Transform
 
 ```
-jscodeshift -t path/to/react-codemorphs/wrapWithJSXElement.js \
+jscodeshift -t path/to/react-codemorphs/wrapWithChildFunctionElement.js \
   --selectionStart=<in the middle of Bar> \
   --selectionEnd=<in the middle of Bar> \
   --name=Test
@@ -159,7 +159,7 @@ const Foo = (props: Props) => <div>{text}</div>
 ### Transform
 
 ```
-jscodeshift -t path/to/react-codemorphs/wrapWithJSXElement.js \
+jscodeshift -t path/to/react-codemorphs/addProp.js \
   --selectionStart=<in the middle of text> \
   --selectionEnd=<in the middle of text> \
   --typeAnnotation=string
@@ -176,64 +176,6 @@ interface Props {
 }
 
 const Foo = (props: Props) => <div>{props.text}</div>
-```
-
-# `wrapWithJSXElement`
-
-A codemod that wraps selected JSX elements inside a parent JSX element.
-This is intended to be called from IDE extensions, it's too cumbersome to call
-from the JSCodeshift CLI.
-
-## Special Options
-
-### `selectionStart` (`number`, **required**)
-
-The start of the selection in the source code. This is used for determining which JSX elements to wrap.
-
-### `selectionEnd` (`number`, **required**)
-
-The end of the selection in the source code. This is used for determining which JSX elements to wrap.
-
-### `name` (`string`, **required**)
-
-The name of the JSX element to wrap with.
-
-## Example
-
-### Before
-
-```tsx
-const Foo = () => (
-  <div>
-    {foo} bar
-    <span />
-    {baz}
-  </div>
-)
-```
-
-### Transform
-
-```
-jscodeshift -t path/to/react-codemorphs/renderConditionally.js \
-  --selectionStart=<before {foo}> \
-  --selectionEnd=<before {baz}> \
-  --name=Test \
-  Foo.ts
-```
-
-### After (with formatting)
-
-```tsx
-const Foo = () => (
-  <div>
-    <Test>
-      {foo} bar
-      <span />
-    </Test>
-    {baz}
-  </div>
-)
 ```
 
 # `renderConditionally`
