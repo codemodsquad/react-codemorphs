@@ -9,8 +9,21 @@
 Codemods for everyday work with React. All support
 Flow, TypeScript, and plain JS.
 
-These codemods are intended to be called from IDE extensions, calling them
+Most of these codemods (except for `convertSimpleClassComponentsToFunctions`) are intended to be called from IDE extensions, calling them
 from the `jscodeshift` CLI wouldn't be worth the effort.
+
+# Table of Contents
+
+<!-- toc -->
+
+- [`wrapWithJSXElement`](#wrapwithjsxelement)
+- [`wrapWithChildFunctionElement`](#wrapwithchildfunctionelement)
+- [`addProp`](#addprop)
+- [`renderConditionally`](#renderconditionally)
+- [`wrapWithTernaryConditional`](#wrapwithternaryconditional)
+- [`convertSimpleClassComponentsToFunctions`](#convertsimpleclasscomponentstofunctions)
+
+<!-- tocstop -->
 
 # `wrapWithJSXElement`
 
@@ -292,3 +305,39 @@ const Foo = () => (
 # `convertSimpleClassComponentsToFunctions`
 
 Converts `React.Component` subclasses with only a `render` method (no lifecycle methods, constructors, or class properties other than `propTypes`, `contextTypes`, `defaultProps`, and no `state` type parameter) into functional components.
+
+## Example
+
+### Before
+
+```ts
+import * as React from 'react'
+import PropTypes from 'prop-types'
+export default class Foo extends React.Component<Props> {
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+  }
+  render(): React.ReactNode | null {
+    return <div>{this.props.title}</div>
+  }
+}
+```
+
+### Command
+
+```
+jscodeshift -t path/to/react-codemorphs/convertSimpleClassComponentsToFunctions.js <file>
+```
+
+### After
+
+```ts
+import * as React from 'react'
+import PropTypes from 'prop-types'
+export default function Foo(props: Props): React.ReactNode | null {
+  return <div>{props.title}</div>
+}
+Foo.propTypes = {
+  title: PropTypes.string.isRequired,
+}
+```
