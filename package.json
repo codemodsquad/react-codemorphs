@@ -21,7 +21,8 @@
     "codecov": "nyc report --reporter=text-lcov > coverage.lcov; codecov",
     "prepublishOnly": "npm run clean && npm run prettier:check && npm run lint && npm test && npm run build",
     "open:coverage": "open coverage/lcov-report/index.html",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "example": "node scripts/example.babel.js"
   },
   "config": {
     "lint": "--cache --ext .js,.ts src test",
@@ -68,7 +69,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/codemodsquad/react-codemorphs.git"
+    "url": "https://github.com/codemodsquad/jscodeshift-transforms-skeleton.git"
   },
   "keywords": [
     "react",
@@ -78,9 +79,9 @@
   "author": "Andy Edwards",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/codemodsquad/react-codemorphs/issues"
+    "url": "https://github.com/codemodsquad/jscodeshift-transforms-skeleton/issues"
   },
-  "homepage": "https://github.com/codemodsquad/react-codemorphs#readme",
+  "homepage": "https://github.com/codemodsquad/jscodeshift-transforms-skeleton#readme",
   "devDependencies": {
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.6",
@@ -102,7 +103,7 @@
     "@types/chai": "^4.2.0",
     "@types/jscodeshift": "^0.6.3",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.12.6",
+    "@types/node": "^13.7.4",
     "@types/prettier": "^1.19.0",
     "babel-eslint": "^10.0.1",
     "babel-plugin-istanbul": "^5.1.0",
