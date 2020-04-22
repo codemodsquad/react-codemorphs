@@ -288,3 +288,7 @@ const Foo = () => (
   </div>
 )
 ```
+
+# `convertSimpleClassComponentsToFunctions`
+
+Converts `React.Component` subclasses with only a `render` method (no lifecycle methods, constructors, or class properties other than `propTypes`, `contextTypes`, `defaultProps`, and no `state` type parameter) into functional components.

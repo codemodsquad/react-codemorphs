@@ -129,6 +129,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.1.5",
+    "jscodeshift-find-imports": "^2.0.0",
     "jscodeshift-paths-in-range": "^1.0.0"
   },
   "renovate": {
